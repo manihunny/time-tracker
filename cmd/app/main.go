@@ -8,6 +8,14 @@ import (
 	"os"
 )
 
+//	@title			Time Tracker API
+//	@version		1.0
+//	@description	API Server for Time Tracker application
+
+//	@host		localhost
+//	@schemes	http
+//	@BasePath	/
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {

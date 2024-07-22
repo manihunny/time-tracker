@@ -7,12 +7,12 @@ import (
 )
 
 type People struct {
-	ID             int    `json:"id,omitempty" db:"id"`
-	Surname        string `json:"surname,omitempty" db:"surname" qp:"surname"`
-	Name           string `json:"name,omitempty" db:"name" qp:"name"`
-	Patronymic     string `json:"patronymic,omitempty" db:"patronymic" qp:"patronymic"`
-	Address        string `json:"address,omitempty" db:"address" qp:"address"`
-	PassportNumber string `json:"passport_number,omitempty" db:"passport_number" qp:"passport_number"`
+	ID             int    `json:"id,omitempty" db:"id" example:"1"`
+	Surname        string `json:"surname,omitempty" db:"surname" qp:"surname" example:"Иванов"`
+	Name           string `json:"name,omitempty" db:"name" qp:"name" example:"Иван"`
+	Patronymic     string `json:"patronymic,omitempty" db:"patronymic" qp:"patronymic" example:"Иванович"`
+	Address        string `json:"address,omitempty" db:"address" qp:"address" example:"г. Москва, ул. Ленина, д. 5, кв. 1"`
+	PassportNumber string `json:"passport_number,omitempty" db:"passport_number" qp:"passport_number" example:"1234 567890"`
 }
 
 type PeopleRepository interface {

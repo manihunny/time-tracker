@@ -1,0 +1,344 @@
+basePath: /
+definitions:
+  peoplerepository.People:
+    properties:
+      address:
+        example: г. Москва, ул. Ленина, д. 5, кв. 1
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Иван
+        type: string
+      passport_number:
+        example: 1234 567890
+        type: string
+      patronymic:
+        example: Иванович
+        type: string
+      surname:
+        example: Иванов
+        type: string
+    type: object
+  taskrepository.Task:
+    properties:
+      finished_at:
+        example: "2024-07-17T00:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      started_at:
+        example: "2024-07-17T00:00:00Z"
+        type: string
+      time_spent:
+        example: 48393984418000
+        type: integer
+      time_spent_formatted:
+        example: 13h26m33.984418s
+        type: string
+      title:
+        example: Выполнить задачу 1
+        type: string
+      user_id:
+        example: 1
+        type: integer
+    type: object
+host: localhost
+info:
+  contact: {}
+  description: API Server for Time Tracker application
+  title: Time Tracker API
+  version: "1.0"
+paths:
+  /people:
+    get:
+      description: Get people list
+      parameters:
+      - default: 10
+        description: Number of results per page
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Number of page
+        in: query
+        name: page
+        type: integer
+      - description: The substring that will be searched for in the 'surname' field
+        in: query
+        name: surname
+        type: string
+      - description: The substring that will be searched for in the 'name' field
+        in: query
+        name: name
+        type: string
+      - description: The substring that will be searched for in the 'patronymic' field
+        in: query
+        name: patronymic
+        type: string
+      - description: The substring that will be searched for in the 'address' field
+        in: query
+        name: address
+        type: string
+      - description: The substring that will be searched for in the 'passport_number'
+          field
+        in: query
+        name: passport_number
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/peoplerepository.People'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get people list
+      tags:
+      - people
+    post:
+      consumes:
+      - application/json
+      description: Create people
+      parameters:
+      - description: User's passport number
+        in: body
+        name: passportNumber
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/peoplerepository.People'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Create people
+      tags:
+      - people
+  /people/{id}:
+    delete:
+      description: Delete people by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+      summary: Delete people by ID
+      tags:
+      - people
+    get:
+      description: Get people by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/peoplerepository.People'
+        "500":
+          description: Internal Server Error
+      summary: Get people by ID
+      tags:
+      - people
+    patch:
+      consumes:
+      - application/json
+      description: Partial update people by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User's surname
+        in: body
+        name: surname
+        schema:
+          type: string
+      - description: User's name
+        in: body
+        name: name
+        schema:
+          type: string
+      - description: User's patronymic
+        in: body
+        name: patronymic
+        schema:
+          type: string
+      - description: User's address
+        in: body
+        name: address
+        schema:
+          type: string
+      - description: User's passport number
+        in: body
+        name: passport_number
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+      summary: Partial update people by ID
+      tags:
+      - people
+    put:
+      consumes:
+      - application/json
+      description: Update people by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User's surname
+        in: body
+        name: surname
+        required: true
+        schema:
+          type: string
+      - description: User's name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: User's patronymic
+        in: body
+        name: patronymic
+        required: true
+        schema:
+          type: string
+      - description: User's address
+        in: body
+        name: address
+        required: true
+        schema:
+          type: string
+      - description: User's passport number
+        in: body
+        name: passport_number
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+      summary: Update people by ID
+      tags:
+      - people
+  /people/{id}/finish-task:
+    post:
+      description: Complete all unfinished tasks for user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Finish task for user
+      tags:
+      - people
+  /people/{id}/start-task:
+    post:
+      consumes:
+      - application/json
+      description: Start new task for user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Task title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Start new task for user
+      tags:
+      - people
+  /people/{id}/task-statistics:
+    post:
+      description: Get task statistics for user. Calculates time spent for tasks and
+        retrieve all tasks data. If task not finished, time spent is calculated up
+        to the current date.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Begin of period
+        in: query
+        name: date_from
+        required: true
+        type: string
+      - description: End of period
+        in: query
+        name: date_to
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/taskrepository.Task'
+            type: array
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get user task statistics for period
+      tags:
+      - people
+schemes:
+- http
+swagger: "2.0"

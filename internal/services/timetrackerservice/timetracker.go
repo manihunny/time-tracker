@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/prawirdani/qparser"
+	"github.com/swaggo/http-swagger"
+	_ "main/docs"
 )
 
 type TimeTrackerService struct {
@@ -40,11 +42,30 @@ func (tts *TimeTrackerService) GetHandler() http.Handler {
 	mux.HandleFunc("POST /people/{id}/finish-task", tts.FinishTaskForUser)
 	mux.HandleFunc("GET /people/{id}/task-statistics", tts.TaskStatistics)
 
-	mux.HandleFunc("GET /info", tts.PeopleInfoMock)
+	mux.HandleFunc("GET /swagger/*", httpSwagger.Handler(httpSwagger.URL("/swagger/doc.json")))
+
+	// mux.HandleFunc("GET /info", tts.PeopleInfoMock)	// mock of third-party API
 
 	return mux
 }
 
+// PeopleList godoc
+//
+//	@Summary		Get people list
+//	@Description	Get people list
+//	@Tags			people
+//	@Produce		json
+//	@Param			limit			query	int		false	"Number of results per page"	default(10)
+//	@Param			page			query	int		false	"Number of page"				default(1)
+//	@Param			surname			query	string	false	"The substring that will be searched for in the 'surname' field"
+//	@Param			name			query	string	false	"The substring that will be searched for in the 'name' field"
+//	@Param			patronymic		query	string	false	"The substring that will be searched for in the 'patronymic' field"
+//	@Param			address			query	string	false	"The substring that will be searched for in the 'address' field"
+//	@Param			passport_number	query	string	false	"The substring that will be searched for in the 'passport_number' field"
+//	@Success		200				{array}	peoplerepository.People
+//	@Failure		400
+//	@Failure		500
+//	@Router			/people [get]
 func (tts *TimeTrackerService) PeopleList(w http.ResponseWriter, r *http.Request) {
 	// Pagination params
 	limit := 10
@@ -55,7 +76,7 @@ func (tts *TimeTrackerService) PeopleList(w http.ResponseWriter, r *http.Request
 		limit, err = strconv.Atoi(query.Get("limit"))
 		if err != nil {
 			defer slog.Error("", "msg", err)
-			w.WriteHeader(http.StatusInternalServerError)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	}
@@ -63,7 +84,7 @@ func (tts *TimeTrackerService) PeopleList(w http.ResponseWriter, r *http.Request
 		page, err = strconv.Atoi(query.Get("page"))
 		if err != nil {
 			defer slog.Error("", "msg", err)
-			w.WriteHeader(http.StatusInternalServerError)
+			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 	}
@@ -97,6 +118,16 @@ func (tts *TimeTrackerService) PeopleList(w http.ResponseWriter, r *http.Request
 	json.NewEncoder(w).Encode(people)
 }
 
+// PeopleGet godoc
+//
+//	@Summary		Get people by ID
+//	@Description	Get people by ID
+//	@Tags			people
+//	@Produce		json
+//	@Param			id	path		int	true	"User ID"
+//	@Success		200	{object}	peoplerepository.People
+//	@Failure		500
+//	@Router			/people/{id} [get]
 func (tts *TimeTrackerService) PeopleGet(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
@@ -119,26 +150,39 @@ func (tts *TimeTrackerService) PeopleGet(w http.ResponseWriter, r *http.Request)
 	_ = json.NewEncoder(w).Encode(p)
 }
 
-func (tts *TimeTrackerService) PeopleInfoMock(w http.ResponseWriter, r *http.Request) {
-	people := map[string]string{
-		"surname":    "Иванов",
-		"name":       "Иван",
-		"patronymic": "Иванович",
-		"address":    "г. Москва, ул. Ленина, д. 5, кв. 1",
-	}
+// Mock of third-party API
+// func (tts *TimeTrackerService) PeopleInfoMock(w http.ResponseWriter, r *http.Request) {
+// 	people := map[string]string{
+// 		"surname":    "Иванов",
+// 		"name":       "Иван",
+// 		"patronymic": "Иванович",
+// 		"address":    "г. Москва, ул. Ленина, д. 5, кв. 1",
+// 	}
 
-	defer slog.Info(
-		"Incoming Request",
-		"method", r.Method,
-		"path", r.URL.Path,
-		"status", http.StatusOK,
-		"user_agent", r.UserAgent(),
-	)
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(people)
-}
+// 	defer slog.Info(
+// 		"Incoming Request",
+// 		"method", r.Method,
+// 		"path", r.URL.Path,
+// 		"status", http.StatusOK,
+// 		"user_agent", r.UserAgent(),
+// 	)
+// 	w.WriteHeader(http.StatusOK)
+// 	w.Header().Set("Content-Type", "application/json")
+// 	json.NewEncoder(w).Encode(people)
+// }
 
+// PeopleCreate godoc
+//
+//	@Summary		Create people
+//	@Description	Create people
+//	@Tags			people
+//	@Accept			json
+//	@Produce		json
+//	@Param			passportNumber	body		string	true	"User's passport number"
+//	@Success		201				{object}	peoplerepository.People
+//	@Failure		400
+//	@Failure		500
+//	@Router			/people [post]
 func (tts *TimeTrackerService) PeopleCreate(w http.ResponseWriter, r *http.Request) {
 	var data map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&data)
@@ -214,6 +258,21 @@ func (tts *TimeTrackerService) PeopleCreate(w http.ResponseWriter, r *http.Reque
 	json.NewEncoder(w).Encode(peopleData)
 }
 
+// PeopleUpdate godoc
+//
+//	@Summary		Update people by ID
+//	@Description	Update people by ID
+//	@Tags			people
+//	@Accept			json
+//	@Param			id				path	int		true	"User ID"
+//	@Param			surname			body	string	true	"User's surname"
+//	@Param			name			body	string	true	"User's name"
+//	@Param			patronymic		body	string	true	"User's patronymic"
+//	@Param			address			body	string	true	"User's address"
+//	@Param			passport_number	body	string	true	"User's passport number"
+//	@Success		204
+//	@Failure		500
+//	@Router			/people/{id} [put]
 func (tts *TimeTrackerService) PeopleUpdate(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
@@ -237,12 +296,27 @@ func (tts *TimeTrackerService) PeopleUpdate(w http.ResponseWriter, r *http.Reque
 		"Incoming Request",
 		"method", r.Method,
 		"path", r.URL.Path,
-		"status", http.StatusOK,
+		"status", http.StatusNoContent,
 		"user_agent", r.UserAgent(),
 	)
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }
 
+// PeoplePartialUpdate godoc
+//
+//	@Summary		Partial update people by ID
+//	@Description	Partial update people by ID
+//	@Tags			people
+//	@Accept			json
+//	@Param			id				path	int		true	"User ID"
+//	@Param			surname			body	string	false	"User's surname"
+//	@Param			name			body	string	false	"User's name"
+//	@Param			patronymic		body	string	false	"User's patronymic"
+//	@Param			address			body	string	false	"User's address"
+//	@Param			passport_number	body	string	false	"User's passport number"
+//	@Success		204
+//	@Failure		500
+//	@Router			/people/{id} [patch]
 func (tts *TimeTrackerService) PeoplePartialUpdate(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
@@ -272,6 +346,15 @@ func (tts *TimeTrackerService) PeoplePartialUpdate(w http.ResponseWriter, r *htt
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// PeopleDelete godoc
+//
+//	@Summary		Delete people by ID
+//	@Description	Delete people by ID
+//	@Tags			people
+//	@Param			id	path	int	true	"User ID"
+//	@Success		204
+//	@Failure		500
+//	@Router			/people/{id} [delete]
 func (tts *TimeTrackerService) PeopleDelete(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
@@ -292,6 +375,18 @@ func (tts *TimeTrackerService) PeopleDelete(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusNoContent)
 }
 
+// StartTaskForUser godoc
+//
+//	@Summary		Start new task for user
+//	@Description	Start new task for user
+//	@Tags			people
+//	@Accept			json
+//	@Param			id		path	int		true	"User ID"
+//	@Param			title	body	string	true	"Task title"
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/people/{id}/start-task [post]
 func (tts *TimeTrackerService) StartTaskForUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
@@ -345,6 +440,16 @@ func (tts *TimeTrackerService) StartTaskForUser(w http.ResponseWriter, r *http.R
 	w.WriteHeader(http.StatusOK)
 }
 
+// FinishTaskForUser godoc
+//
+//	@Summary		Finish task for user
+//	@Description	Complete all unfinished tasks for user
+//	@Tags			people
+//	@Param			id	path	int	true	"User ID"
+//	@Success		200
+//	@Failure		400
+//	@Failure		500
+//	@Router			/people/{id}/finish-task [post]
 func (tts *TimeTrackerService) FinishTaskForUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
@@ -370,6 +475,19 @@ func (tts *TimeTrackerService) FinishTaskForUser(w http.ResponseWriter, r *http.
 	w.WriteHeader(http.StatusOK)
 }
 
+// TaskStatistics godoc
+//
+//	@Summary		Get user task statistics for period
+//	@Description	Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date.
+//	@Tags			people
+//	@Produce		json
+//	@Param			id			path	int		true	"User ID"
+//	@Param			date_from	query	string	true	"Begin of period"
+//	@Param			date_to		query	string	true	"End of period"
+//	@Success		200			{array}	taskrepository.Task
+//	@Failure		400
+//	@Failure		500
+//	@Router			/people/{id}/task-statistics [post]
 func (tts *TimeTrackerService) TaskStatistics(w http.ResponseWriter, r *http.Request) {
 	var date_from time.Time
 	var date_to time.Time
