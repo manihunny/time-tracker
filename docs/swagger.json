@@ -9,7 +9,6 @@
         "contact": {},
         "version": "1.0"
     },
-    "basePath": "/",
     "paths": {
         "/people": {
             "get": {
@@ -104,7 +103,8 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "{\r\n    \"passportNumber\": \"1234 567890\"\r\n}"
                         }
                     }
                 ],
@@ -372,7 +372,8 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "{\r\n    \"title\": \"Выполнить задачу 1\"\r\n}"
                         }
                     }
                 ],
@@ -390,7 +391,7 @@
             }
         },
         "/people/{id}/task-statistics": {
-            "post": {
+            "get": {
                 "description": "Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date.",
                 "produces": [
                     "application/json"
@@ -409,6 +410,7 @@
                     },
                     {
                         "type": "string",
+                        "example": "30-01-2006",
                         "description": "Begin of period",
                         "name": "date_from",
                         "in": "query",
@@ -416,6 +418,7 @@
                     },
                     {
                         "type": "string",
+                        "example": "30-01-2006",
                         "description": "End of period",
                         "name": "date_to",
                         "in": "query",

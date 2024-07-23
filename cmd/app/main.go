@@ -13,7 +13,6 @@ import (
 //	@description	API Server for Time Tracker application
 
 //	@schemes	http
-//	@BasePath	/
 
 func main() {
 	err := godotenv.Load()

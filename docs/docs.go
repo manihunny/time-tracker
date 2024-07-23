@@ -108,7 +108,8 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "{\r\n    \"passportNumber\": \"1234 567890\"\r\n}"
                         }
                     }
                 ],
@@ -376,7 +377,8 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "{\r\n    \"title\": \"Выполнить задачу 1\"\r\n}"
                         }
                     }
                 ],
@@ -394,7 +396,7 @@ const docTemplate = `{
             }
         },
         "/people/{id}/task-statistics": {
-            "post": {
+            "get": {
                 "description": "Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date.",
                 "produces": [
                     "application/json"
@@ -413,6 +415,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "example": "30-01-2006",
                         "description": "Begin of period",
                         "name": "date_from",
                         "in": "query",
@@ -420,6 +423,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "example": "30-01-2006",
                         "description": "End of period",
                         "name": "date_to",
                         "in": "query",
@@ -516,7 +520,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/",
+	BasePath:         "",
 	Schemes:          []string{"http"},
 	Title:            "Time Tracker API",
 	Description:      "API Server for Time Tracker application",

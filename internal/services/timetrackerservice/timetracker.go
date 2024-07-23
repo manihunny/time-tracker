@@ -178,7 +178,7 @@ func (tts *TimeTrackerService) PeopleGet(w http.ResponseWriter, r *http.Request)
 //	@Tags			people
 //	@Accept			json
 //	@Produce		json
-//	@Param			passportNumber	body		string	true	"User's passport number"
+//	@Param			passportNumber	body		string	true	"User's passport number"	SchemaExample({\r\n    "passportNumber": "1234 567890"\r\n})
 //	@Success		201				{object}	peoplerepository.People
 //	@Failure		400
 //	@Failure		500
@@ -382,7 +382,7 @@ func (tts *TimeTrackerService) PeopleDelete(w http.ResponseWriter, r *http.Reque
 //	@Tags			people
 //	@Accept			json
 //	@Param			id		path	int		true	"User ID"
-//	@Param			title	body	string	true	"Task title"
+//	@Param			title	body	string	true	"Task title"	SchemaExample({\r\n    "title": "Выполнить задачу 1"\r\n})
 //	@Success		200
 //	@Failure		400
 //	@Failure		500
@@ -482,12 +482,12 @@ func (tts *TimeTrackerService) FinishTaskForUser(w http.ResponseWriter, r *http.
 //	@Tags			people
 //	@Produce		json
 //	@Param			id			path	int		true	"User ID"
-//	@Param			date_from	query	string	true	"Begin of period"
-//	@Param			date_to		query	string	true	"End of period"
+//	@Param			date_from	query	string	true	"Begin of period"	example(30-01-2006)
+//	@Param			date_to		query	string	true	"End of period"		example(30-01-2006)
 //	@Success		200			{array}	taskrepository.Task
 //	@Failure		400
 //	@Failure		500
-//	@Router			/people/{id}/task-statistics [post]
+//	@Router			/people/{id}/task-statistics [get]
 func (tts *TimeTrackerService) TaskStatistics(w http.ResponseWriter, r *http.Request) {
 	var date_from time.Time
 	var date_to time.Time

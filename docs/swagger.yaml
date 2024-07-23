@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   peoplerepository.People:
     properties:
@@ -112,6 +111,7 @@ paths:
         name: passportNumber
         required: true
         schema:
+          example: "{\r\n    \"passportNumber\": \"1234 567890\"\r\n}"
           type: string
       produces:
       - application/json
@@ -290,6 +290,7 @@ paths:
         name: title
         required: true
         schema:
+          example: "{\r\n    \"title\": \"Выполнить задачу 1\"\r\n}"
           type: string
       responses:
         "200":
@@ -302,7 +303,7 @@ paths:
       tags:
       - people
   /people/{id}/task-statistics:
-    post:
+    get:
       description: Get task statistics for user. Calculates time spent for tasks and
         retrieve all tasks data. If task not finished, time spent is calculated up
         to the current date.
@@ -313,11 +314,13 @@ paths:
         required: true
         type: integer
       - description: Begin of period
+        example: 30-01-2006
         in: query
         name: date_from
         required: true
         type: string
       - description: End of period
+        example: 30-01-2006
         in: query
         name: date_to
         required: true
