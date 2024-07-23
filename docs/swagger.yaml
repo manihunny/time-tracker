@@ -45,7 +45,6 @@ definitions:
         example: 1
         type: integer
     type: object
-host: localhost
 info:
   contact: {}
   description: API Server for Time Tracker application

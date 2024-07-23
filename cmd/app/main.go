@@ -12,7 +12,6 @@ import (
 //	@version		1.0
 //	@description	API Server for Time Tracker application
 
-//	@host		localhost
 //	@schemes	http
 //	@BasePath	/
 
