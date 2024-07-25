@@ -7,7 +7,7 @@ import (
 )
 
 type People struct {
-	ID             int    `json:"id,omitempty" db:"id" example:"1"`
+	ID             int    `json:"-" db:"id" example:"1"`
 	Surname        string `json:"surname,omitempty" db:"surname" qp:"surname" example:"Иванов"`
 	Name           string `json:"name,omitempty" db:"name" qp:"name" example:"Иван"`
 	Patronymic     string `json:"patronymic,omitempty" db:"patronymic" qp:"patronymic" example:"Иванович"`

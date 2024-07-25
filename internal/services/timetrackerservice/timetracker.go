@@ -265,11 +265,7 @@ func (tts *TimeTrackerService) PeopleCreate(w http.ResponseWriter, r *http.Reque
 //	@Tags			people
 //	@Accept			json
 //	@Param			id				path	int		true	"User ID"
-//	@Param			surname			body	string	true	"User's surname"
-//	@Param			name			body	string	true	"User's name"
-//	@Param			patronymic		body	string	true	"User's patronymic"
-//	@Param			address			body	string	true	"User's address"
-//	@Param			passport_number	body	string	true	"User's passport number"
+//	@Param			data			body	peoplerepository.People	true	"User's new data"
 //	@Success		204
 //	@Failure		500
 //	@Router			/people/{id} [put]
@@ -309,11 +305,7 @@ func (tts *TimeTrackerService) PeopleUpdate(w http.ResponseWriter, r *http.Reque
 //	@Tags			people
 //	@Accept			json
 //	@Param			id				path	int		true	"User ID"
-//	@Param			surname			body	string	false	"User's surname"
-//	@Param			name			body	string	false	"User's name"
-//	@Param			patronymic		body	string	false	"User's patronymic"
-//	@Param			address			body	string	false	"User's address"
-//	@Param			passport_number	body	string	false	"User's passport number"
+//	@Param			data			body	peoplerepository.People	true	"User's new data"
 //	@Success		204
 //	@Failure		500
 //	@Router			/people/{id} [patch]
@@ -478,7 +470,7 @@ func (tts *TimeTrackerService) FinishTaskForUser(w http.ResponseWriter, r *http.
 // TaskStatistics godoc
 //
 //	@Summary		Get user task statistics for period
-//	@Description	Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date.
+//	@Description	Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date
 //	@Tags			people
 //	@Produce		json
 //	@Param			id			path	int		true	"User ID"

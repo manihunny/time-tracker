@@ -4,9 +4,6 @@ definitions:
       address:
         example: г. Москва, ул. Ленина, д. 5, кв. 1
         type: string
-      id:
-        example: 1
-        type: integer
       name:
         example: Иван
         type: string
@@ -25,9 +22,6 @@ definitions:
       finished_at:
         example: "2024-07-17T00:00:00Z"
         type: string
-      id:
-        example: 1
-        type: integer
       started_at:
         example: "2024-07-17T00:00:00Z"
         type: string
@@ -174,31 +168,12 @@ paths:
         name: id
         required: true
         type: integer
-      - description: User's surname
+      - description: User's new data
         in: body
-        name: surname
+        name: data
+        required: true
         schema:
-          type: string
-      - description: User's name
-        in: body
-        name: name
-        schema:
-          type: string
-      - description: User's patronymic
-        in: body
-        name: patronymic
-        schema:
-          type: string
-      - description: User's address
-        in: body
-        name: address
-        schema:
-          type: string
-      - description: User's passport number
-        in: body
-        name: passport_number
-        schema:
-          type: string
+          $ref: '#/definitions/peoplerepository.People'
       responses:
         "204":
           description: No Content
@@ -217,36 +192,12 @@ paths:
         name: id
         required: true
         type: integer
-      - description: User's surname
+      - description: User's new data
         in: body
-        name: surname
+        name: data
         required: true
         schema:
-          type: string
-      - description: User's name
-        in: body
-        name: name
-        required: true
-        schema:
-          type: string
-      - description: User's patronymic
-        in: body
-        name: patronymic
-        required: true
-        schema:
-          type: string
-      - description: User's address
-        in: body
-        name: address
-        required: true
-        schema:
-          type: string
-      - description: User's passport number
-        in: body
-        name: passport_number
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/peoplerepository.People'
       responses:
         "204":
           description: No Content
@@ -306,7 +257,7 @@ paths:
     get:
       description: Get task statistics for user. Calculates time spent for tasks and
         retrieve all tasks data. If task not finished, time spent is calculated up
-        to the current date.
+        to the current date
       parameters:
       - description: User ID
         in: path

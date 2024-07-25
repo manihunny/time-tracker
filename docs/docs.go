@@ -178,48 +178,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "User's surname",
-                        "name": "surname",
+                        "description": "User's new data",
+                        "name": "data",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's name",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's patronymic",
-                        "name": "patronymic",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's address",
-                        "name": "address",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's passport number",
-                        "name": "passport_number",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/peoplerepository.People"
                         }
                     }
                 ],
@@ -274,43 +238,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "User's surname",
-                        "name": "surname",
+                        "description": "User's new data",
+                        "name": "data",
                         "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's name",
-                        "name": "name",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's patronymic",
-                        "name": "patronymic",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's address",
-                        "name": "address",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "User's passport number",
-                        "name": "passport_number",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/peoplerepository.People"
                         }
                     }
                 ],
@@ -397,7 +330,7 @@ const docTemplate = `{
         },
         "/people/{id}/task-statistics": {
             "get": {
-                "description": "Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date.",
+                "description": "Get task statistics for user. Calculates time spent for tasks and retrieve all tasks data. If task not finished, time spent is calculated up to the current date",
                 "produces": [
                     "application/json"
                 ],
@@ -458,10 +391,6 @@ const docTemplate = `{
                     "type": "string",
                     "example": "г. Москва, ул. Ленина, д. 5, кв. 1"
                 },
-                "id": {
-                    "type": "integer",
-                    "example": 1
-                },
                 "name": {
                     "type": "string",
                     "example": "Иван"
@@ -486,10 +415,6 @@ const docTemplate = `{
                 "finished_at": {
                     "type": "string",
                     "example": "2024-07-17T00:00:00Z"
-                },
-                "id": {
-                    "type": "integer",
-                    "example": 1
                 },
                 "started_at": {
                     "type": "string",
